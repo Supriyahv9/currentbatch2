@@ -1,22 +1,22 @@
 package Module;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.Properties;
-import java.util.Set;
+import java.time.LocalDateTime;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
 
 import CommonUtils.ExcelUtils;
 import CommonUtils.PropertyFileUtils;
+import CommonUtils.WebDriverUtils;
 
 public class CreateContactModule {
 
@@ -26,6 +26,8 @@ public class CreateContactModule {
 	
 	PropertyFileUtils putils = new PropertyFileUtils();
 	ExcelUtils eutils = new ExcelUtils();
+	WebDriverUtils wutils = new WebDriverUtils();
+	
 	
 	//To read data from property file
 	String BROWSER = putils.getdatafromProprtyFile("browser");
@@ -49,8 +51,8 @@ public class CreateContactModule {
 			System.out.println("Default browser");
 			}
 			
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			wutils.maximizewindow(driver);
+			wutils.WaitWebelementToLoad(driver);
 	
 			
 			//Step5:Load the url
@@ -78,28 +80,14 @@ public class CreateContactModule {
 	
 	//Step12:Select Support Group in groupdropdown
 		WebElement Groupdropdown = driver.findElement(By.name("assigned_group_id"));	
-		Select s = new Select(Groupdropdown);
-		s.selectByVisibleText(GROUP);
+		wutils.handledropdown(Groupdropdown, GROUP);
+		
 		
 	//Step13:Click on + icon in Organization name tf
 	driver.findElement(By.xpath("(//img[@src='themes/softed/images/select.gif'])[1]")).click();
 	
 //		Transfer control from Parent to child
-		
-			Set<String> ids = driver.getWindowHandles();
-			System.out.println(ids);
-			
-			for(String e : ids) {
-				String actaulurl = driver.switchTo().window(e).getCurrentUrl();
-				System.out.println(actaulurl);
-				
-			String	childurl="http://localhost:8888/index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=&recordid=";
-				
-				if(actaulurl.contains(childurl)) {
-					break;
-				}
-			}
-			
+	wutils.Switch(driver, "http://localhost:8888/index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=&recordid=");
 			
 	//Step14:Search Organization name in search tf
 		driver.findElement(By.id("search_txt")).sendKeys(NAME);
@@ -112,15 +100,8 @@ public class CreateContactModule {
 		
 		
 	//Transfer control from Child to parent
+		wutils.Switch(driver, "http://localhost:8888/index.php?module=Contacts&action=EditView&return_action=DetailView&parenttab=Marketing");
 		
-				for(String e :ids) {
-					String actualurl = driver.switchTo().window(e).getCurrentUrl();
-					
-				String	parenturl="http://localhost:8888/index.php?module=Contacts&action=EditView&return_action=DetailView&parenttab=Marketing";
-					if(actualurl.contains(parenturl)) {
-						break;
-					}
-				}
 				
 	//Step17:Enter the date in Birthdate
 	driver.findElement(By.id("jscal_field_birthday")).sendKeys("2024-01-2");
@@ -128,15 +109,18 @@ public class CreateContactModule {
 	//Step18:Click on Save btn
 	driver.findElement(By.name("button")).click();
 	
-	//Step19:Mouse hover on Administrator icon
+	Thread.sleep(2000);
+	
+	//Step19:To Take screenshot of Webpage
+	wutils.totakescreenshot(driver);
+	
+	//Step20:Mouse hover on Administrator icon
 			WebElement adminicon = driver.findElement(By.xpath("//img[@src='themes/softed/images/user.PNG']"));
-			Actions a = new Actions(driver);
-			a.moveToElement(adminicon).perform();
-		
+			wutils.mousehover(driver, adminicon);
 			
 			Thread.sleep(2000);
 			
-			//Step20:Click on Signout 
+			//Step21:Click on Signout 
 		driver.findElement(By.xpath("//a[text()='Sign Out']")).click();
 	
 	}
