@@ -1,0 +1,41 @@
+1)Launch https://github.com
+2)Create a account
+3)Create Repository:
+*Click on new
+*Enter Repository name(Project name)
+*Enter oneline description about project---Descriptiontf
+*Select either Public(everyone can see repo & select who can do changes in repo) or private(select who can see repo & can do changes in repo)
+*select checkbox add readme file---detail description about project
+*Click on Createrepository.
+4)Create a file in repo:
+*Click on create new file/add file----click on create new file.
+*Enter file name
+*Enter the content of file
+*Click on commit change.
+5)How to upload file in repo:
+*Click on add file-----drag & drop the file or click on choose your file-----Click on commit change.
+6)Collabration:
+*Click on settings
+*Click on Collabrators
+*Click add people
+*Enter the username/fullname/email---other people
+*Click on add
+7)How to create branch:
+*Click on main dropdown
+*Enter branch name in tf
+*Click on create branch
+8)How to delete branch:
+*Click on main dropdown
+*Click on view all branch
+*Select branch --delete
+9)Clone:
+10)Push :send the file from your repository
+11)Pull:receive the file to your repository
+12)How to create a Tokens:
+*Click on settings
+*Click on developer settings
+*Click personal access tokens
+*Click on tokens(classic)
+*Click on generate new tokens
+*Click on Generate a new token(classic)
+
